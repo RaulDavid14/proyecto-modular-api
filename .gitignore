@@ -1,0 +1,49 @@
+# Python
+*.py[cod]
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+*.db
+media/
+*.env
+.env
+
+# Migraciones de Django (ignorar archivos no esenciales)
+**/migrations/__pycache__/
+**/migrations/*.pyc
+**/migrations/*.pyo
+
+# Si usas macOS
+.DS_Store
+
+# Configuración de VS Code
+.vscode/
+
+# Ignorar entorno virtual
+venv/
+
+# Archivo de configuración sensible
+proyecto/settings.py 
+
+manage.py

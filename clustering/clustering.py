@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 from .data_extraction import obtener_datos_usuarios
 from .preprocessing import preprocesar_datos, limpiar_datos
-from catalogos.models import DatosGenerales
+from almacen_app.models import DatosGeneralesModel
 
 def aplicar_clustering():
     try:
@@ -35,7 +35,7 @@ def aplicar_clustering():
         niveles_consumo = {0: "Bajo", 1: "Moderado", 2: "Normal", 3: "Excesivo"}
 
         # Obtener los usuarios de la base de datos
-        usuarios = DatosGenerales.objects.all()
+        usuarios = DatosGeneralesModel.objects.all()
         print("Usuarios obtenidos:", list(usuarios))
 
         # Guardar los resultados de clustering

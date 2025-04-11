@@ -1,22 +1,21 @@
-from rest_framework.decorators import api_view
-from rest_framework import status
+from almacen_app.models.progreso import ProgresoUsuarioModel as Progreso
+from rest_framework.views import APIView   
 from rest_framework.response import Response
-from clients.clients import Clientes
+from rest_framework import status
+from .serializers.respuestas_serializers import RespuestasSerializers
 
-from .serializers import *
-
-@api_view()
-def get_total(request):
-    cantidad = Clientes.obtener_total_preguntas()
-    data = {
-        'total' : cantidad['total']
-    }
-    
-    return Response(data, status=status.HTTP_200_OK)
-
-@api_view(['POST'])
-def add_datos_generales(request):
-    if request.method == 'POST':
-        return Response({}, status=status.HTTP_201_CREATED)
-    else:
-        return Response({"error": "Método no permitido"}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 
+class CreateRespuestasAV(APIView):
+    def post(self, request):
+        serializer = RespuestasSerializers(data = request.data)
+        
+        if serializer.is_valid():
+            progreso = Progreso()
+            id_usuario = request.data.get('id_usuario')
+            id_cuestionario = request.data.get('id_cuestionario')
+            
+            
+                            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        

@@ -1,4 +1,4 @@
-import numpy as np
+"""import numpy as np
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 def preprocesar_datos(datos):
@@ -46,3 +46,4 @@ def limpiar_datos(datos):
     print("Datos después de la limpieza:", datos_np)
 
     return datos_np.tolist()  # Convertir de nuevo a lista para compatibilidad
+"""

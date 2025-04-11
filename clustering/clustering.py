@@ -1,3 +1,4 @@
+"""
 import numpy as np
 from sklearn.cluster import KMeans
 from .data_extraction import obtener_datos_usuarios
@@ -60,3 +61,4 @@ def aplicar_clustering():
 
 def guardar_resultados():
     return aplicar_clustering()
+"""

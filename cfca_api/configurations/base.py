@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = secret_key
 
 INSTALLED_APPS = [
+    'respuestas_app',
     'almacen_app',
     'rest_framework',
     'django.contrib.admin',

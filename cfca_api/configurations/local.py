@@ -6,7 +6,7 @@ ALLOWED_HOSTS = []
 
 
 APIS = {
-    'cfca_url' : 'http://127.0.0.1:8000/api/'
+    'cfca_url' : 'http://127.0.0.1:8000/api'
     ,'timeout' : 10
 }
 

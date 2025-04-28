@@ -1,4 +1,4 @@
-"""from almacen_app.models import DatosGeneralesModel, RespuestaModel
+from almacen_app.models import DatosGeneralesModel, RespuestaModel
 from clients.clients import Clientes
 
 def obtener_datos_usuarios():
@@ -20,4 +20,3 @@ def obtener_datos_usuarios():
 
     print("Datos obtenidos para clustering:", datos)
     return datos
-"""

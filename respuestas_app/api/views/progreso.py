@@ -2,7 +2,7 @@ from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIVie
 from respuestas_app.models.progreso import ProgresoModel
 from respuestas_app.api.serializers.progreso import ProgresoSerializer 
 
-class CreateRespuestaView(CreateAPIView):
+class CreateProgresoView(CreateAPIView):
     queryset = ProgresoModel.objects.all()
     serializer_class = ProgresoSerializer
 

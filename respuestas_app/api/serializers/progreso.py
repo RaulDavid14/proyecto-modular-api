@@ -5,4 +5,4 @@ class ProgresoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProgresoModel
         fields = '__all__'
-        read_only_fields = ['id', 'fecha_creacion', 'fecha_actualizacion']
+        read_only_fields = ['id', 'fecha_creacion', 'fecha_actualizacion', 'progreso']

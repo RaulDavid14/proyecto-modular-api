@@ -14,3 +14,14 @@ class Clientes():
         else:
             print(f'No se pudo obtener el total de preguntas') 
             return None
+    
+    @staticmethod
+    def get_cuestionarios():
+        url = f'{settings.APIS['cfca_url']}/cuestionarios/all/'
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None 
+        

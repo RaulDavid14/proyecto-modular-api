@@ -1,4 +1,7 @@
+
 from almacen_app.models import AlmacenModel
+
+#from almacen_app.models import DatosGeneralesModel, RespuestaModel
 from clients.clients import Clientes
 from collections import defaultdict
 
@@ -34,3 +37,7 @@ def obtener_datos_usuarios():
 
     print(f"Total de usuarios procesados: {len(datos)}")
     return datos
+
+#    print("Datos obtenidos para clustering:", datos)
+ #   return datos
+

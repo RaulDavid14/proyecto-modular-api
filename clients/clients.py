@@ -17,7 +17,7 @@ class Clientes():
     
     @staticmethod
     def get_cuestionarios():
-        url = f'{settings.APIS['cfca_url']}/cuestionarios/all/'
+        url = f"{settings.APIS['cfca_url']}/cuestionarios/all/"
         response = requests.get(url)
         
         if response.status_code == 200:

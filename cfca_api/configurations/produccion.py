@@ -5,6 +5,12 @@ DEBUG = False
 ALLOWED_HOSTS = ['api-cfca.pythonanywhere.com']
 
 
+APIS = {
+    'cfca_api_url' : 'https://cfca.pythonanywhere.com/api'
+    ,'timeout' : 10
+}
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

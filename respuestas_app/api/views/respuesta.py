@@ -12,20 +12,18 @@ class CreateRespuestaView(CreateAPIView):
 
     def perform_create(self, serializer):
         datos = serializer.validated_data
-
+        abreviacion = datos['abreviacion']
         id_usuario = datos['id_usuario']
         id_cuestionario = datos['id_cuestionario']
-
         serializer.save()
 
-        progreso_obj, creado = ProgresoModel.objects.get_or_create(id_usuario=id_usuario)
-
+        progreso_obj, creado = ProgresoModel.objects.get_or_create(id_usuario=id_usuario) # retorna una tuopla. 
         progreso = progreso_obj.progreso
 
         if id_cuestionario in progreso:
-            progreso[id_cuestionario]['completo'] = True
+            progreso[abreviacion]['completo'] = True
         else:
-            progreso[id_cuestionario] = {'completo': True}
+            progreso[abreviacion] = {'completo': True}
 
         progreso_obj.progreso = progreso
         progreso_obj.save(update_fields=['progreso', 'fecha_actualizacion'])
@@ -52,24 +50,20 @@ class DestroyRespuestaView(DestroyAPIView):
         return get_object_or_404(RespuestaModel, id_usuario=id_usuario, id_cuestionario=id_cuestionario)
 
     def delete(self, request, *args, **kwargs):
-        
+        cuestionario = self.kwargs.get('cuestionario')        
         respuesta = self.get_object()
-
         id_usuario = respuesta.id_usuario
-        id_cuestionario = respuesta.id_cuestionario  
 
         try:
             progreso_obj = ProgresoModel.objects.get(id_usuario=id_usuario)
             progreso = progreso_obj.progreso
-
-            if id_cuestionario in progreso:
-                progreso[id_cuestionario]['completo'] = False
+            if cuestionario in progreso:
+                progreso[cuestionario]['completo'] = False
                 progreso_obj.progreso = progreso
                 progreso_obj.save(update_fields=['progreso', 'fecha_actualizacion'])
         except ProgresoModel.DoesNotExist:
             pass  
 
-        
         respuesta.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)

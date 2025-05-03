@@ -1,6 +1,6 @@
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, DestroyAPIView
 from respuestas_app.models.respuesta import RespuestaModel
-from respuestas_app.api.serializers.respuesta import RespuestaSerializer
+from respuestas_app.api.serializers.respuesta import RespuestaSerializer, CreateRespuestaSerializer
 from django.shortcuts import get_object_or_404
 from respuestas_app.models.progreso import ProgresoModel
 from rest_framework.response import Response
@@ -8,16 +8,19 @@ from rest_framework import status
 
 class CreateRespuestaView(CreateAPIView):
     queryset = RespuestaModel.objects.all()
-    serializer_class = RespuestaSerializer
+    serializer_class = RespuestaSerializer  # Usa el correcto
 
     def perform_create(self, serializer):
-        datos = serializer.validated_data
-        abreviacion = datos['abreviacion']
-        id_usuario = datos['id_usuario']
-        id_cuestionario = datos['id_cuestionario']
-        serializer.save()
+        # Primero, accedemos al validated_data para extraer los datos necesarios
+        abreviacion = serializer.validated_data.get('abreviacion')
+        id_usuario = serializer.validated_data.get('id_usuario')
+        id_cuestionario = serializer.validated_data.get('id_cuestionario')
 
-        progreso_obj, creado = ProgresoModel.objects.get_or_create(id_usuario=id_usuario) # retorna una tuopla. 
+        # Guardamos la respuesta (esto ya elimina 'abreviacion' internamente)
+        respuesta = serializer.save()
+
+        # Actualizamos el progreso del usuario
+        progreso_obj, creado = ProgresoModel.objects.get_or_create(id_usuario=id_usuario)
         progreso = progreso_obj.progreso
 
         if id_cuestionario in progreso:

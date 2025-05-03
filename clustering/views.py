@@ -4,7 +4,7 @@ from django.views import View
 from .clustering import guardar_resultados
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from almacen_app.models.serializers import ResultadoClusteringSerializer
+from .serializers import ResultadoClusteringSerializer
 
 class ClusteringView(View):
     def get(self, request):

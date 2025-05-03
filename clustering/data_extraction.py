@@ -1,7 +1,4 @@
-
 from almacen_app.models import AlmacenModel
-
-#from almacen_app.models import DatosGeneralesModel, RespuestaModel
 from clients.clients import Clientes
 from collections import defaultdict
 
@@ -23,11 +20,13 @@ def obtener_datos_usuarios():
         return datos
 
     respuestas = AlmacenModel.objects.all().order_by('id_usuario', 'no_pregunta')
+    print(f"Respuestas obtenidas: {len(respuestas)}")
 
     for r in respuestas:
         respuestas_por_usuario[r.id_usuario].append(r.id_respuesta)
 
     for usuario_id, respuestas_usuario in respuestas_por_usuario.items():
+        print(f"Respuestas para usuario {usuario_id}: {len(respuestas_usuario)}")
         if len(respuestas_usuario) < total_preguntas:
             respuestas_usuario.extend([0] * (total_preguntas - len(respuestas_usuario)))
         elif len(respuestas_usuario) > total_preguntas:
@@ -37,7 +36,3 @@ def obtener_datos_usuarios():
 
     print(f"Total de usuarios procesados: {len(datos)}")
     return datos
-
-#    print("Datos obtenidos para clustering:", datos)
- #   return datos
-

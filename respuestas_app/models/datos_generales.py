@@ -1,7 +1,7 @@
 from django.db import models
 
 class DatosGeneralesModel(models.Model):
-    usuario = models.IntegerField()
+    usuario = models.IntegerField(unique=True)
     situacion_laboral = models.IntegerField()
     ingresos = models.IntegerField()
     sexo = models.IntegerField()

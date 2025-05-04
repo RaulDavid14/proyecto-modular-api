@@ -14,3 +14,9 @@ class RespuestaSerializer(serializers.Serializer):
         # Quitar "abreviacion" porque no es parte del modelo
         abreviacion = validated_data.pop('abreviacion', None)
         return RespuestaModel.objects.create(**validated_data)
+
+class CreateRespuestaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RespuestaModel
+        fields = '__all__'
+        read_only_fields = ['id', 'fecha_creacion', 'fecha_actualizacion']

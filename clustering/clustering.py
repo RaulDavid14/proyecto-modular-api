@@ -1,64 +1,66 @@
-"""
 import numpy as np
 from sklearn.cluster import KMeans
 from .data_extraction import obtener_datos_usuarios
 from .preprocessing import preprocesar_datos, limpiar_datos
-from almacen_app.models import DatosGeneralesModel
+from almacen_app.models import AlmacenModel
 
 def aplicar_clustering():
     try:
-        # Obtener los datos de usuarios
+        # Obtener datos de usuarios
         datos = obtener_datos_usuarios()
-        print("Datos obtenidos:", datos)
+        print(f"Datos obtenidos: {len(datos)}")  # Ver cuántos datos se han obtenido
 
-        # Preprocesar los datos
-        datos_procesados = preprocesar_datos(datos)
-        print("Datos procesados:", datos_procesados)
-
-        # Limpiar los datos
+        # Limpiar y procesar los datos
         datos_limpios = limpiar_datos(datos)
-        print("Datos limpios:", datos_limpios)
+        datos_procesados = preprocesar_datos(datos_limpios)
 
-        # Verificar si los datos procesados están vacíos
         if datos_procesados.size == 0:
-            print("No hay datos suficientes para clustering")
             return {"error": "No hay suficientes datos para clustering"}
 
-        # Crear el modelo de clustering (KMeans)
+        # Aplicar KMeans clustering
         modelo = KMeans(n_clusters=4, random_state=42)
         modelo.fit(datos_procesados)
-
-        # Obtener las etiquetas de los clusters
         etiquetas = modelo.labels_.tolist()
-        print("Etiquetas de los clusters:", etiquetas)
 
-        # Definir los niveles de consumo
+        print(f"Etiquetas generadas: {etiquetas}")  # Ver cuántas etiquetas se generaron
+
+        # Verificar que las etiquetas y los usuarios coincidan
+        if len(etiquetas) != len(datos_procesados):
+            print(f"Error: número de etiquetas ({len(etiquetas)}) no coincide con el número de datos procesados ({len(datos_procesados)})")
+            return {"error": "Mismatch en la cantidad de etiquetas y datos"}
+
+        # Mapear las etiquetas de clusters a niveles de consumo
         niveles_consumo = {0: "Bajo", 1: "Moderado", 2: "Normal", 3: "Excesivo"}
 
-        # Obtener los usuarios de la base de datos
-        usuarios = DatosGeneralesModel.objects.all()
-        print("Usuarios obtenidos:", list(usuarios))
+        # Obtener usuarios de la base de datos
+        usuarios = AlmacenModel.objects.values(
+            'id_usuario', 'id_poblacion', 'id_sexo', 'id_nivel_educativo'
+        ).distinct().order_by('id_usuario')
 
-        # Guardar los resultados de clustering
+        usuarios = list(usuarios)
+
+        print(f"Usuarios obtenidos: {len(usuarios)}")  # Ver cuántos usuarios se recuperaron
+
+        # Crear resultados con los clusters asignados a los usuarios
         resultados = []
         for i, usuario in enumerate(usuarios):
+            if i >= len(etiquetas):  # Verificar que el índice esté dentro de los límites
+                print(f"Índice fuera de rango: {i}")
+                break
             nivel_consumo = niveles_consumo.get(etiquetas[i], "Desconocido")
-
             resultados.append({
-                "user_id": usuario.id,
-                "sexo_id": usuario.sexo.id if usuario.sexo else "Desconocido",
-                "poblacion_id": usuario.poblacion.id if usuario.poblacion else "Desconocido",
-                "nivel_educativo_id": usuario.nivel_educativo.id if usuario.nivel_educativo else "Desconocido",
+                "id_usuario": usuario['id_usuario'],
+                "id_poblacion": usuario['id_poblacion'],
+                "id_sexo": usuario['id_sexo'],
+                "id_nivel_educativo": usuario['id_nivel_educativo'],
                 "cluster": nivel_consumo
             })
 
-        print("Resultados de clustering:", resultados)
         return {"clustering": resultados}
-    
+
     except Exception as e:
-        print("Error en aplicar_clustering:", e)
+        print(f"Error en aplicar_clustering: {str(e)}")
         return {"error": str(e)}
 
 def guardar_resultados():
     return aplicar_clustering()
-"""
